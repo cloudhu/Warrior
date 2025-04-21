@@ -2,7 +2,6 @@
 
 
 #include "DataAssets/StartUpData/DataAsset_StartUpDataBase.h"
-
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
 
