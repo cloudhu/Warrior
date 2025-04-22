@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "Interfaces/PawnCombatInterface.h"
 #include "WarriorBaseCharacter.generated.h"
 
 class UDataAsset_StartUpDataBase;
@@ -12,9 +13,11 @@ class UWarriorAttributeSet;
 class UWarriorAbilitySystemComponent;
 
 UCLASS()
-class WARRIOR_API AWarriorBaseCharacter : public ACharacter, public IAbilitySystemInterface
+class WARRIOR_API AWarriorBaseCharacter : public ACharacter, public IAbilitySystemInterface,public IPawnCombatInterface
 {
 public:
+	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+
 	//~ Begin IAbilitySystemInterface Interface.
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface Interface.

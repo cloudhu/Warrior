@@ -1,7 +1,8 @@
 // CloudHu:604746493@qq.com All Rights Reserved
 
-#include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
+
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
+#include "AbilitySystem/Abilities/WarriorHeroGameplayAbility.h"
 
 void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {

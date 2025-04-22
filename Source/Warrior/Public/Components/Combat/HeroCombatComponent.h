@@ -13,6 +13,11 @@ class AWarriorHeroWeapon;
 UCLASS()
 class WARRIOR_API UHeroCombatComponent : public UPawnCombatComponent
 {
+public:
+	virtual void OnHitTargetActor(AActor* HitActor) override;
+	virtual void OnWeaponPulledFromTargetActor(AActor* InteractedActor) override;
+
+private:
 	GENERATED_BODY()
 
 public:

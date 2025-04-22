@@ -20,6 +20,7 @@ class WARRIOR_API AWarriorHeroCharacter : public AWarriorBaseCharacter
 
 public:
 	AWarriorHeroCharacter();
+	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 
 protected:
 	virtual void BeginPlay() override;
