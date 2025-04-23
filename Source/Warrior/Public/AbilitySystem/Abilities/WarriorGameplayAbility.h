@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "WarriorTypes/WarriorEnumTypes.h"
 #include "WarriorGameplayAbility.generated.h"
 
 class UWarriorAbilitySystemComponent;
@@ -30,14 +31,20 @@ protected:
 
 	//~ Begin UGameplayAbility Interface.
 	virtual void OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
-	
+
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-		bool bReplicateEndAbility, bool bWasCancelled) override;
+	                        bool bReplicateEndAbility, bool bWasCancelled) override;
 	//~ End UGameplayAbility Interface.
 
-	UFUNCTION(BlueprintPure,Category="Warrior|Ability")
-	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo()const;
+	UFUNCTION(BlueprintPure, Category="Warrior|Ability")
+	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
 
-	UFUNCTION(BlueprintPure,Category="Warrior|Ability")
-	UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponentFromActorInfo()const;
+	UFUNCTION(BlueprintPure, Category="Warrior|Ability")
+	UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponentFromActorInfo() const;
+
+	FActiveGameplayEffectHandle NativeApplyGameplayEffectSpecHandle(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+
+	UFUNCTION(BlueprintCallable, Category="Warrior|Ability", meta=(DisplayName="Apply Gameplay EffectSpec Handle To Target Actor", ExpandEnumAsExecs="OutSuccessType"))
+	FActiveGameplayEffectHandle BP_ApplyGameplaySpecEffectHandleToTargetActor(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle,
+	                                                                          EWarriorSuccessType& OutSuccessType);
 };

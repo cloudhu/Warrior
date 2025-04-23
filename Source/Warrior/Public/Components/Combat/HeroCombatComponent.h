@@ -22,5 +22,11 @@ private:
 
 public:
 	UFUNCTION(BlueprintCallable, Category="Warrior|Combat")
+	AWarriorHeroWeapon* GetHeroCurrentEquippedWeapon()const;
+	
+	UFUNCTION(BlueprintCallable, Category="Warrior|Combat")
+	float GetHeroCurrentEquippedWeaponDamageAtLv(float InLevel)const;
+	
+	UFUNCTION(BlueprintCallable, Category="Warrior|Combat")
 	AWarriorHeroWeapon* GetHeroCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
 };
