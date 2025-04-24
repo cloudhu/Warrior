@@ -6,6 +6,7 @@
 #include "Characters/WarriorBaseCharacter.h"
 #include "MonsterCharacter.generated.h"
 
+class UEnemyUIComponent;
 class UEnemyCombatComponent;
 /**
  * 
@@ -25,8 +26,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Combat)
 	UEnemyCombatComponent* EnemyCombatComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=UI)
+	UEnemyUIComponent* EnemyUIComponent;
+
+public:
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+
 private:
-	void InitEnemyStartUpData();
+	void InitEnemyStartUpData() const;
 public:
 	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() const { return EnemyCombatComponent; }
 };

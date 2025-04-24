@@ -4,6 +4,7 @@
 #include "Characters/MonsterCharacter.h"
 
 #include "Components/Combat/EnemyCombatComponent.h"
+#include "Components/UI/EnemyUIComponent.h"
 #include "DataAssets/StartUpData/DataAsset_StartUpDataBase.h"
 #include "Engine/AssetManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -23,6 +24,7 @@ AMonsterCharacter::AMonsterCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.f;
 
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
+	EnemyUIComponent = CreateDefaultSubobject<UEnemyUIComponent>(TEXT("EnemyUIComponent"));
 }
 
 UPawnCombatComponent* AMonsterCharacter::GetPawnCombatComponent() const
@@ -36,7 +38,13 @@ void AMonsterCharacter::PossessedBy(AController* NewController)
 	InitEnemyStartUpData();
 }
 
-void AMonsterCharacter::InitEnemyStartUpData()
+UPawnUIComponent* AMonsterCharacter::GetPawnUIComponent() const
+{
+	// return Super::GetPawnUIComponent();
+	return EnemyUIComponent;
+}
+
+void AMonsterCharacter::InitEnemyStartUpData() const
 {
 	if (CharacterStartUpData.IsNull())
 	{

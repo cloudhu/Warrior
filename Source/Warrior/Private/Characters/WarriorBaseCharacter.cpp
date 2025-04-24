@@ -6,6 +6,11 @@
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystem/WarriorAttributeSet.h"
 
+UPawnUIComponent* AWarriorBaseCharacter::GetPawnUIComponent() const
+{
+	return nullptr;
+}
+
 UPawnCombatComponent* AWarriorBaseCharacter::GetPawnCombatComponent() const
 {
 	return nullptr;
