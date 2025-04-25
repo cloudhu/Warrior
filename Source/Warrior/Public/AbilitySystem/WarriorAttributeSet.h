@@ -12,6 +12,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+class IPawnUIInterface;
 /**
  * @class UWarriorAttributeSet
  * @brief A class that extends UAttributeSet to manage specific attributes for a warrior character, such as health and rage.
@@ -59,4 +60,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UWarriorAttributeSet, DamageTaken)
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+private:
+	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterfacePtr;
 };

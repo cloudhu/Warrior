@@ -47,6 +47,7 @@ protected:
 
 public:
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+	virtual UHeroUIComponent* GetHeroUIComponent() const override;
 
 protected:
 #pragma endregion Components

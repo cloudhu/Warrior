@@ -101,7 +101,11 @@ void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 UPawnUIComponent* AWarriorHeroCharacter::GetPawnUIComponent() const
 {
-	// return Super::GetPawnUIComponent();
+	return HeroUIComponent;
+}
+
+UHeroUIComponent* AWarriorHeroCharacter::GetHeroUIComponent() const
+{
 	return HeroUIComponent;
 }
 

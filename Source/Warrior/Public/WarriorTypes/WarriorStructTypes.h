@@ -39,4 +39,7 @@ struct FWarriorHeroWeaponData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FWarriorHeroAbilitySet> DefaultWeaponAbilities;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UTexture2D> SoftWeaponIconTexture;
 };
