@@ -5,8 +5,11 @@
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
+#include "WarriorDebugHelper.h"
+#include "WarriorGameplayTags.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UWarriorAbilitySystemComponent* UWarriorFunctionLibrary::NativeGetASCFromActor(AActor* InActor)
 {
@@ -68,13 +71,55 @@ bool UWarriorFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* Targe
 {
 	if (QueryPawn && TargetPawn)
 	{
-		if (IGenericTeamAgentInterface* QueryTeamAgent = Cast<IGenericTeamAgentInterface>(QueryPawn))
+		if (const IGenericTeamAgentInterface* QueryTeamAgent = Cast<IGenericTeamAgentInterface>(QueryPawn->GetController()))
 		{
-			if (IGenericTeamAgentInterface* TargetTeamAgent = Cast<IGenericTeamAgentInterface>(TargetPawn))
+			// Debug::Print(TEXT("QueryTeamAgent GetGenericTeamId:%s"), QueryTeamAgent->GetGenericTeamId());
+			if (const IGenericTeamAgentInterface* TargetTeamAgent = Cast<IGenericTeamAgentInterface>(TargetPawn->GetController()))
 			{
 				return QueryTeamAgent->GetGenericTeamId() != TargetTeamAgent->GetGenericTeamId();
 			}
 		}
 	}
 	return false;
+}
+
+float UWarriorFunctionLibrary::GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, float InLevel)
+{
+	return InScalableFloat.GetValueAtLevel(InLevel);
+}
+
+FGameplayTag UWarriorFunctionLibrary::ComputeHitReactDirectionTag(const AActor* InAttacker, const AActor* InVictim, float& OutAngle)
+{
+	check(InAttacker&&InVictim);
+	const FVector VictimForward = InVictim->GetActorForwardVector();
+	const FVector VictimToAttackerNormalized = (InAttacker->GetActorLocation() - InVictim->GetActorLocation()).GetSafeNormal();
+
+	const float DotResult = FVector::DotProduct(VictimForward, VictimToAttackerNormalized);
+	OutAngle = UKismetMathLibrary::DegAcos(DotResult);
+
+	if (const FVector CrossResult = FVector::CrossProduct(VictimForward, VictimToAttackerNormalized); CrossResult.Z < 0.f)
+	{
+		OutAngle *= -1.f;
+	}
+
+	if (OutAngle >= -45.f && OutAngle <= 45.f)
+	{
+		return WarriorGameplayTags::Shared_Status_HitReact_Front;
+	}
+	else if (OutAngle < -45.f && OutAngle >= -135.f)
+	{
+		return WarriorGameplayTags::Shared_Status_HitReact_Left;
+	}
+	else if (OutAngle < -135.f || OutAngle > 135.f)
+	{
+		return WarriorGameplayTags::Shared_Status_HitReact_Back;
+	}
+	return WarriorGameplayTags::Shared_Status_HitReact_Right;
+}
+
+bool UWarriorFunctionLibrary::IsValidBlock(const AActor* InAttacker, const AActor* InDefender)
+{
+	check(InAttacker&&InDefender);
+	const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
+	return DotResult < -0.1f;
 }

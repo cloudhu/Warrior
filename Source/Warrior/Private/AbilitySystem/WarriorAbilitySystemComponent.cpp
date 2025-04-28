@@ -2,6 +2,9 @@
 
 
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
+
+// #include "WarriorDebugHelper.h"
+#include "WarriorGameplayTags.h"
 #include "AbilitySystem/Abilities/WarriorHeroGameplayAbility.h"
 
 void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
@@ -23,6 +26,18 @@ void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& I
 
 void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
+	if (!InInputTag.IsValid() || !InInputTag.MatchesTag(WarriorGameplayTags::InputTag_HoldOn))
+	{
+		return;
+	}
+
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag) && AbilitySpec.IsActive())
+		{
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+	}
 }
 
 void UWarriorAbilitySystemComponent::RemoveGrantedHeroWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& InSpecHandles)
@@ -72,11 +87,13 @@ bool UWarriorAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag Abilit
 	check(AbilityTagToActivate.IsValid());
 
 	TArray<FGameplayAbilitySpec*> FoundAbilitySpecs;
+	// Debug::Print(AbilityTagToActivate.GetTagName().ToString());
 	GetActivatableGameplayAbilitySpecsByAllMatchingTags(AbilityTagToActivate.GetSingleTagContainer(), FoundAbilitySpecs);
 	if (!FoundAbilitySpecs.IsEmpty())
 	{
 		const int32 RandomAbilityIndex = FMath::RandRange(0, FoundAbilitySpecs.Num() - 1);
-		if (const FGameplayAbilitySpec* SpecToActivate = FoundAbilitySpecs[RandomAbilityIndex]; SpecToActivate->IsActive())
+		// Debug::Print(TEXT("RandomAbilityIndex:%i"),RandomAbilityIndex);
+		if (const FGameplayAbilitySpec* SpecToActivate = FoundAbilitySpecs[RandomAbilityIndex]; !SpecToActivate->IsActive())
 		{
 			return TryActivateAbility(SpecToActivate->Handle);
 		}
