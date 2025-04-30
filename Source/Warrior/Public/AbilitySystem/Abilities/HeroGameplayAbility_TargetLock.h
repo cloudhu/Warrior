@@ -26,9 +26,14 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnTargetLockTick(float DeltaTime);
 
+	UFUNCTION(BlueprintCallable)
+	void SwitchTarget(const FGameplayTag& InSwitchDirectionTag);
+
 private:
 	void InitTargetLockMovement();
+
 	void InitTargetLockMappingContext();
+
 	void ResetTargetLockMappingContext();
 
 	void ResetTargetLockMovement();
@@ -38,6 +43,8 @@ private:
 	void GetAvailableActorsToLock();
 
 	AActor* GetNearestTargetFromAvailableActors(const TArray<AActor*>& InAvailableActors);
+
+	void GetAvailableActorsAroundTarget(TArray<AActor*>& OutActorsOnLeft, TArray<AActor*>& OutActorsOnRight);
 
 	void CancelTargetLockAbility();
 
@@ -66,8 +73,11 @@ private:
 	float TargetLockMaxWalkSpeed = 200.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="Target Lock")
+	float TargetLockCameraOffsetDistance = 20.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Target Lock")
 	UInputMappingContext* TargetLockMappingContext;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Target Lock")
 	TSubclassOf<UWarriorUserWidget> TargetLockWidgetClass;
 

@@ -2,11 +2,8 @@
 
 
 #include "Characters/WarriorHeroCharacter.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
-
-#include "WarriorDebugHelper.h"
 #include "WarriorGameplayTags.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
@@ -169,6 +166,7 @@ void AWarriorHeroCharacter::Input_Look(const FInputActionValue& InputActionValue
 void AWarriorHeroCharacter::Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue)
 {
 	SwitchDirection = InputActionValue.Get<FVector2D>();
+	// Debug::Print(SwitchDirection.ToString());
 }
 
 void AWarriorHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue)
@@ -177,6 +175,8 @@ void AWarriorHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue&
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, SwitchDirection.X > 0.f
 		                                                               ? WarriorGameplayTags::Player_Event_SwitchTarget_Right
 		                                                               : WarriorGameplayTags::Player_Event_SwitchTarget_Left, Data);
+
+	// Debug::Print(SwitchDirection.ToString());
 }
 
 void AWarriorHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

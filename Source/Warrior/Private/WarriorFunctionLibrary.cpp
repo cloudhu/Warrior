@@ -67,7 +67,7 @@ UPawnCombatComponent* UWarriorFunctionLibrary::BP_GetPawnCombatComponentFromActo
 	return CombatComponent;
 }
 
-bool UWarriorFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn)
+bool UWarriorFunctionLibrary::IsTargetPawnHostile(const APawn* QueryPawn, const APawn* TargetPawn)
 {
 	if (QueryPawn && TargetPawn)
 	{
@@ -122,4 +122,14 @@ bool UWarriorFunctionLibrary::IsValidBlock(const AActor* InAttacker, const AActo
 	check(InAttacker&&InDefender);
 	const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
 	return DotResult < -0.1f;
+}
+
+bool UWarriorFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* InInstigator, AActor* InTargetActor,
+                                                                         const FGameplayEffectSpecHandle InSpecHandle)
+{
+	UWarriorAbilitySystemComponent* SourceAsc = NativeGetASCFromActor(InInstigator);
+	UWarriorAbilitySystemComponent* TargetAsc = NativeGetASCFromActor(InTargetActor);
+	const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceAsc->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetAsc);
+	Debug::Print(TEXT("WasSuccessfullyApplied")+ActiveGameplayEffectHandle.WasSuccessfullyApplied());
+	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
 }
