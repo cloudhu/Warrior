@@ -20,10 +20,12 @@ public:
 	void OnAbilityInputReleased(const FGameplayTag& InInputTag);
 
 	UFUNCTION(BlueprintCallable, Category="Warrior|Ability")
-	void RemoveGrantedHeroWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandles);
+	void RemoveGrantedHeroWeaponAbilities(UPARAM(ref)
+		TArray<FGameplayAbilitySpecHandle>& InSpecHandles);
 
 	UFUNCTION(BlueprintCallable, Category="Warrior|Ability", meta=(ApplyLevel="1"))
-	void GrantHeroWeaponAbilities(const TArray<FWarriorHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel,
+	void GrantHeroWeaponAbilities(const TArray<FWarriorHeroAbilitySet>& InDefaultWeaponAbilities, const TArray<FWarriorHeroSpecialAbilitySet>& InSpecialAbilitySets,
+	                              const int32 ApplyLevel,
 	                              TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles);
 
 	UFUNCTION(BlueprintCallable, Category="Warrior|Ability")
