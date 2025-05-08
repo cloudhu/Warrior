@@ -42,9 +42,12 @@ protected:
 	UFUNCTION(BlueprintPure, Category="Warrior|Ability")
 	UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponentFromActorInfo() const;
 
-	FActiveGameplayEffectHandle NativeApplyGameplayEffectSpecHandle(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+	FActiveGameplayEffectHandle NativeApplyGameplayEffectSpecHandle(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle) const;
 
 	UFUNCTION(BlueprintCallable, Category="Warrior|Ability", meta=(DisplayName="Apply Gameplay EffectSpec Handle To Target Actor", ExpandEnumAsExecs="OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyGameplaySpecEffectHandleToTargetActor(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle,
 	                                                                          EWarriorSuccessType& OutSuccessType);
+
+	UFUNCTION(BlueprintCallable, Category="Warrior|Ability")
+	void ApplyGameplayEffectSpecHandleToHitResults(const FGameplayEffectSpecHandle& InSpecHandle, const TArray<FHitResult>& InHitResults);
 };

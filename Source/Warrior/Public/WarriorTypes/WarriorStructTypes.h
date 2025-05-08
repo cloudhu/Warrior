@@ -3,9 +3,9 @@
 #pragma once
 #include "GameplayTagContainer.h"
 #include "ScalableFloat.h"
+#include "AbilitySystem/Abilities/WarriorHeroGameplayAbility.h"
 #include "WarriorStructTypes.generated.h"
 
-class UWarriorHeroGameplayAbility;
 class UInputMappingContext;
 class UWarriorHeroLinkedAnimLayer;
 

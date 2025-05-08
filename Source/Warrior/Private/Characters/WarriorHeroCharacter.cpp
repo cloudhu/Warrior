@@ -102,6 +102,9 @@ void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	                                             ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
 
 	WarriorInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
+
+	WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_PickUp_Stones,
+	                                             ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
 }
 
 UPawnUIComponent* AWarriorHeroCharacter::GetPawnUIComponent() const
@@ -177,6 +180,17 @@ void AWarriorHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue&
 		                                                               : WarriorGameplayTags::Player_Event_SwitchTarget_Left, Data);
 
 	// Debug::Print(SwitchDirection.ToString());
+}
+
+void AWarriorHeroCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
+{
+	const FGameplayEventData Data;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		WarriorGameplayTags::Player_Event_ConsumeStones,
+		Data
+	);
 }
 
 void AWarriorHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

@@ -14,6 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityIconSlotUpdateDelegate, F
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCooldownBegin, FGameplayTag, AbilityInputTag, float, TotalCooldownTime, float, RemainingCooldownTime);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStoneInteractedDelegate,bool,bShouldDisplayInputKey);
 /**
  * UHeroUIComponent is a UI component class specific to hero characters, extending UPawnUIComponent.
  * It provides delegates for various UI-related events that can be assigned and triggered within Blueprints.
@@ -45,4 +46,7 @@ public:
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FOnAbilityCooldownBegin OnAbilityCooldownBegin;
+
+	UPROPERTY(BlueprintCallable,BlueprintAssignable)
+	FOnStoneInteractedDelegate OnStoneInteracted;
 };
