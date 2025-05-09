@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
 #include "WarriorDebugHelper.h"
+#include "WarriorGameInstance.h"
 #include "WarriorGameplayTags.h"
 #include "Interfaces/PawnCombatInterface.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -136,14 +137,14 @@ bool UWarriorFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor*
 
 void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime,
                                         EWarriorCountDownActionInput CountDownInput,UPARAM(DisplayName=Output)
-                                        EWarriorCountDownActionOutput&  CountDownOutput, FLatentActionInfo LatentInfo)
+                                        EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo)
 {
 	if (GEngine)
 	{
-		if (UWorld* World=GEngine->GetWorldFromContextObject(WorldContextObject,EGetWorldErrorMode::ReturnNull))
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::ReturnNull))
 		{
-			FLatentActionManager& LatentActionManager=World->GetLatentActionManager();
-			FWarriorCountDownAction* FoundAction=LatentActionManager.FindExistingAction<FWarriorCountDownAction>(LatentInfo.CallbackTarget,LatentInfo.UUID);
+			FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+			FWarriorCountDownAction* FoundAction = LatentActionManager.FindExistingAction<FWarriorCountDownAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 			if (CountDownInput == EWarriorCountDownActionInput::Start)
 			{
 				if (!FoundAction)
@@ -151,7 +152,7 @@ void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float
 					LatentActionManager.AddNewAction(
 						LatentInfo.CallbackTarget,
 						LatentInfo.UUID,
-						new FWarriorCountDownAction(TotalTime,UpdateInterval,OutRemainingTime,CountDownOutput,LatentInfo)
+						new FWarriorCountDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownOutput, LatentInfo)
 					);
 				}
 			}
@@ -164,5 +165,52 @@ void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float
 				}
 			}
 		}
+	}
+}
+
+UWarriorGameInstance* UWarriorFunctionLibrary::GetWarriorGameInstance(const UObject* WorldContextObject)
+{
+	if (GEngine)
+	{
+		if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			return World->GetGameInstance<UWarriorGameInstance>();
+		}
+	}
+	return nullptr;
+}
+
+void UWarriorFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, const EWarriorInputMode InInputMode)
+{
+	APlayerController* PlayerController = nullptr;
+
+	if (GEngine)
+	{
+		if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			PlayerController = World->GetFirstPlayerController();
+		}
+	}
+
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	const FInputModeGameOnly GameOnlyMode;
+	const FInputModeUIOnly UIOnlyMode;
+
+	switch (InInputMode)
+	{
+	case EWarriorInputMode::GameOnly:
+		PlayerController->SetInputMode(GameOnlyMode);
+		PlayerController->bShowMouseCursor = false;
+		break;
+	case EWarriorInputMode::UIOnly:
+		PlayerController->SetInputMode(UIOnlyMode);
+		PlayerController->bShowMouseCursor = true;
+		break;
+	default:
+		break;
 	}
 }
