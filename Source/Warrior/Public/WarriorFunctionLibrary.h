@@ -15,7 +15,9 @@ class UPawnCombatComponent;
 class UWarriorAbilitySystemComponent;
 
 /**
- * 
+ * A static function library containing utility functions for the Warrior game framework.
+ * This class provides a collection of helper methods for gameplay-related operations,
+ * including actor manipulation, gameplay tag management, combat component access, and more.
  */
 UCLASS()
 class WARRIOR_API UWarriorFunctionLibrary : public UBlueprintFunctionLibrary
@@ -66,5 +68,31 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category = "Warrior|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
 	static void ToggleInputMode(const UObject* WorldContextObject,EWarriorInputMode InInputMode);
-	
+
+	/**
+	 * Saves the current game difficulty to the save game slot.
+	 *
+	 * This function creates a save game object of type UWarriorSaveGame and assigns the provided difficulty level to it.
+	 * The save game object is then saved to a predefined slot using the UGameplayStatics::SaveGameToSlot function.
+	 *
+	 * @param InDifficultyToSave The game difficulty level to be saved.
+	 *                           Must be one of the values from the EWarriorGameDifficulty enumeration.
+	 */
+	UFUNCTION(BlueprintCallable,Category = "Warrior|FunctionLibrary")
+	static void SaveCurrentGameDifficulty(EWarriorGameDifficulty InDifficultyToSave);
+
+	/**
+	 * Attempts to load the saved game difficulty from a predefined save slot.
+	 *
+	 * This function checks if a save game exists in the specified slot. If it does, the save game is loaded
+	 * and cast to UWarriorSaveGame. If the cast is successful, the saved game difficulty is retrieved and
+	 * assigned to the OutSavedDifficulty parameter. If the save game does not exist or the cast fails,
+	 * the function returns false.
+	 *
+	 * @param OutSavedDifficulty Reference to the variable where the loaded game difficulty will be stored.
+	 *                            Must be of type EWarriorGameDifficulty.
+	 * @return True if the saved game difficulty was successfully loaded, false otherwise.
+	 */
+	UFUNCTION(BlueprintCallable,Category = "Warrior|FunctionLibrary")
+	static bool TryLoadSavedGameDifficulty(EWarriorGameDifficulty& OutSavedDifficulty);
 };

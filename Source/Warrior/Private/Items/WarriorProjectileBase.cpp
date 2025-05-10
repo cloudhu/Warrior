@@ -35,7 +35,7 @@ AWarriorProjectileBase::AWarriorProjectileBase()
 	ProjectileMovementComp->Velocity = FVector(1.f, 0.f, 0.f);
 	ProjectileMovementComp->ProjectileGravityScale = 0.f;
 
-	InitialLifeSpan = 4.f;
+	InitialLifeSpan = 14.f;
 }
 
 // Called when the game starts or when spawned

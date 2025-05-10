@@ -10,7 +10,7 @@ public class Warrior : ModuleRules
 
 		PublicDependencyModuleNames.AddRange([
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayTags", "GameplayAbilities", "GameplayTasks", "AIModule", "AnimGraphRuntime",
-			"MotionWarping", "Niagara","NavigationSystem"
+			"MotionWarping", "Niagara", "NavigationSystem", "MoviePlayer"
 		]);
 
 		PrivateDependencyModuleNames.AddRange([]);

@@ -58,6 +58,9 @@ class WARRIOR_API AWarriorSurvivalGameMode : public AWarriorBaseGameMode
 {
 	GENERATED_BODY()
 
+public:
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
 protected:
 	virtual void BeginPlay() override;
 

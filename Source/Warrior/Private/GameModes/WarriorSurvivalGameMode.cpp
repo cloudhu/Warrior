@@ -3,11 +3,22 @@
 
 #include "GameModes/WarriorSurvivalGameMode.h"
 #include "NavigationSystem.h"
+#include "WarriorFunctionLibrary.h"
 #include "Characters/MonsterCharacter.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 #include "Engine/TargetPoint.h"
 #include "Kismet/GameplayStatics.h"
+
+void AWarriorSurvivalGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	if (EWarriorGameDifficulty SavedGameDifficulty; UWarriorFunctionLibrary::TryLoadSavedGameDifficulty(SavedGameDifficulty))
+	{
+		CurrentGameDifficulty = SavedGameDifficulty;
+	}
+}
 
 void AWarriorSurvivalGameMode::BeginPlay()
 {
